@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 import connectMongo from "./config/mongo.js";
 import { connectPostgres } from "./config/postgres.js";
 
-dotenv.config();
+dotenv.config({ debug: false });
 
 const app = express();
 const port = process.env.PORT || 5000;
