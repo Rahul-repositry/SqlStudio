@@ -113,7 +113,7 @@ export const getOTP = asyncHandler(async (req, res, next) => {
     );
 });
 
-// 3. Regular Login (For verified users)
+
 export const login = asyncHandler(async (req, res, next) => {
   const { email, password } = req.body;
 
