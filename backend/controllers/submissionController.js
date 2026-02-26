@@ -6,6 +6,40 @@ import Assignment from "../models/Assignment.js";
 import ApiResponse from "../utils/apiResponse.js";
 
 // @desc    Execute SQL and Save/Update Submission
+
+function doesOrderMatter(solutionQuery) {
+  const cleaned = solutionQuery.toLowerCase();
+  return cleaned.includes("order by");
+}
+function validateSqlQuery(sql) {
+  const cleaned = sql.trim().toLowerCase();
+
+  // Block multi-statements
+  if (cleaned.includes(";") && !cleaned.endsWith(";")) {
+    throw new Error("Multiple statements are not allowed.");
+  }
+
+  // Allow only SELECT queries
+  if (!cleaned.startsWith("select")) {
+    throw new Error("Only SELECT queries are allowed.");
+  }
+
+  // Block dangerous keywords
+  const forbidden = [
+    "drop",
+    "truncate",
+    "alter",
+    "create",
+  ];
+
+  for (const word of forbidden) {
+    if (cleaned.includes(word)) {
+      throw new Error(`Keyword "${word}" is not allowed.`);
+    }
+  }
+
+  return true;
+}
 export const executeAndSubmit = asyncHandler(async (req, res, next) => {
   const { assignmentId, sqlQuery } = req.body;
   const userId = req.user._id;
@@ -13,35 +47,37 @@ export const executeAndSubmit = asyncHandler(async (req, res, next) => {
   const assignment = await Assignment.findById(assignmentId);
   if (!assignment) return next(new AppError("Assignment not found", 404));
 
+  try {
+    validateSqlQuery(sqlQuery);
+  } catch (err) {
+    return next(new AppError(err.message, 400));
+  }
+
   const client = await pool.connect();
 
   try {
     await client.query("BEGIN");
 
     const userResult = await client.query(sqlQuery);
-
     const solutionResult = await client.query(assignment.solutionQuery);
 
-    const snapshot = await client.query(
-      `SELECT * FROM ${assignment.targetTable} LIMIT 10`,
-    );
-
     await client.query("ROLLBACK");
-
-    const isCorrect = compareResultSets(userResult.rows, solutionResult.rows);
-
-    const submissionData = {
-      lastQuery: sqlQuery,
-      status: isCorrect ? "solved" : "attempted",
-    };
-
-    if (isCorrect) {
-      submissionData.solvedAt = Date.now();
-    }
+    const orderMatters = doesOrderMatter(assignment.solutionQuery);
+    const isCorrect = compareResultSets(
+      userResult.rows,
+      solutionResult.rows,
+      orderMatters,
+    );
 
     const submission = await Submission.findOneAndUpdate(
       { user: userId, assignment: assignmentId },
-      { $set: submissionData },
+      {
+        $set: {
+          lastQuery: sqlQuery,
+          status: isCorrect ? "solved" : "attempted",
+          ...(isCorrect && { solvedAt: Date.now() }),
+        },
+      },
       { upsert: true, new: true },
     );
 
@@ -49,11 +85,10 @@ export const executeAndSubmit = asyncHandler(async (req, res, next) => {
       new ApiResponse(
         200,
         {
-          rows: snapshot.rows,
           rowCount: userResult.rowCount,
-          isSolved: submission.status === "solved",
-          submissionId: submission._id,
           expectedRows: solutionResult.rowCount,
+          isSolved: isCorrect,
+          submissionId: submission._id,
         },
         isCorrect
           ? "Correct! Assignment solved."
@@ -62,26 +97,28 @@ export const executeAndSubmit = asyncHandler(async (req, res, next) => {
     );
   } catch (err) {
     await client.query("ROLLBACK");
-    return next(new AppError(`SQL Error: ${err.message}`, 400));
+    return next(new AppError("Invalid or unsafe SQL query.", 400));
   } finally {
     client.release();
   }
 });
-
-function compareResultSets(userRows, solutionRows) {
+function compareResultSets(userRows, solutionRows, orderMatters) {
   if (userRows.length !== solutionRows.length) return false;
 
-  if (userRows.length === 0) return true;
+  if (!orderMatters) {
+    const normalize = (rows) => rows.map((r) => JSON.stringify(r)).sort();
 
-  const userSet = new Set(
-    userRows.map((row) => JSON.stringify(row, Object.keys(row).sort())),
-  );
-  const solutionSet = new Set(
-    solutionRows.map((row) => JSON.stringify(row, Object.keys(row).sort())),
-  );
+    return (
+      JSON.stringify(normalize(userRows)) ===
+      JSON.stringify(normalize(solutionRows))
+    );
+  }
 
-  for (const userRow of userSet) {
-    if (!solutionSet.has(userRow)) return false;
+  // Order-sensitive
+  for (let i = 0; i < userRows.length; i++) {
+    if (JSON.stringify(userRows[i]) !== JSON.stringify(solutionRows[i])) {
+      return false;
+    }
   }
 
   return true;
@@ -91,6 +128,11 @@ export const getMySubmissions = asyncHandler(async (req, res) => {
   const submissions = await Submission.find({
     user: req.user._id,
   });
+  if (submissions.length === 0) {
+    return res
+      .status(200)
+      .json(new ApiResponse(200, [], "No submissions found for this user"));
+  }
 
   res
     .status(200)

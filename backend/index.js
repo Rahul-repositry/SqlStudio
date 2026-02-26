@@ -7,7 +7,7 @@ import { connectPostgres } from "./config/postgres.js";
 import authRoutes from "./routes/authRoutes.js";
 import assignmentRoutes from "./routes/assignmentRoutes.js";
 import submissionRoutes from "./routes/submissionRoutes.js";
-
+import globalErrorHandler from "./middleware/error.js";
 dotenv.config({ debug: false });
 
 const app = express();
@@ -27,6 +27,8 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/assignments", assignmentRoutes);
 app.use("/api/submissions", submissionRoutes);
+
+app.use(globalErrorHandler);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

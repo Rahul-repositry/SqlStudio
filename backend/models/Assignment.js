@@ -18,6 +18,7 @@ const assignmentSchema = new mongoose.Schema({
     },
   ],
 
+  targetTable: { type: String, required: true },
   solutionQuery: { type: String, required: true },
 });
 
