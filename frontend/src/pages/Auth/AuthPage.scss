@@ -1,0 +1,121 @@
+.auth-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: $bg-main;
+
+  .auth-brand {
+    flex: 1.2;
+    background: linear-gradient(135deg, $bg-sidebar 0%, #000 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    border-right: 1px solid $border-color;
+    position: relative;
+
+    .brand-content {
+      h1 {
+        font-size: 3.5rem;
+        letter-spacing: -2px;
+        color: $color-primary;
+      }
+      p {
+        color: $text-muted;
+        font-size: 1.1rem;
+        margin-top: 10px;
+      }
+      .status-dot {
+        margin-top: 20px;
+        font-size: 0.8rem;
+        color: $color-success;
+        opacity: 0.8;
+      }
+    }
+
+    @media (max-width: 900px) {
+      display: none;
+    }
+  }
+
+  .auth-form-section {
+    flex: 1;
+    @include flex-center;
+    padding: 20px;
+
+    .form-card {
+      width: 100%;
+      max-width: 420px;
+      animation: fadeIn 0.4s ease-out;
+
+      .form-header {
+        margin-bottom: 32px;
+        h2 {
+          font-size: 1.8rem;
+          margin-bottom: 8px;
+        }
+        p {
+          color: $text-muted;
+          font-size: 0.9rem;
+        }
+      }
+    }
+  }
+}
+
+.input-group {
+  margin-bottom: 20px;
+  label {
+    display: block;
+    font-size: 0.85rem;
+    color: $text-muted;
+    margin-bottom: 8px;
+  }
+  .hint {
+    font-size: 0.75rem;
+    color: $text-muted;
+    margin-top: 6px;
+  }
+}
+
+.alert {
+  padding: 12px;
+  border-radius: $radius;
+  font-size: 0.85rem;
+  margin-bottom: 20px;
+  border: 1px solid;
+
+  &-success {
+    background: rgba($color-success, 0.1);
+    color: $color-success;
+    border-color: rgba($color-success, 0.2);
+  }
+  &-error {
+    background: rgba($color-error, 0.1);
+    color: $color-error;
+    border-color: rgba($color-error, 0.2);
+  }
+}
+
+.w-full {
+  width: 100%;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.form-footer {
+  margin-top: 24px;
+  text-align: center;
+  border-top: 1px solid $border-color;
+  padding-top: 20px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
