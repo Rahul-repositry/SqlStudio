@@ -7,11 +7,10 @@ const AuthPage: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-
   const [isLogin, setIsLogin] = useState(
     location.pathname === "/authPage/login" ? true : false,
   );
-  const [step, setStep] = useState(1); 
+  const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ type: "", text: "" });
 
@@ -25,8 +24,6 @@ const AuthPage: React.FC = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
-
 
   const handleGetOTP = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -61,6 +58,7 @@ const AuthPage: React.FC = () => {
       const { data } = await axios.post(
         `${BACKEND_URI}/api/auth/signup`,
         formData,
+        { withCredentials: true },
       );
       localStorage.setItem("token", data.token);
       navigate("/dashboard");
@@ -85,10 +83,14 @@ const AuthPage: React.FC = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const { data } = await axios.post(`${BACKEND_URI}/api/auth/login`, {
-        email: formData.email,
-        password: formData.password,
-      });
+      const { data } = await axios.post(
+        `${BACKEND_URI}/api/auth/login`,
+        {
+          email: formData.email,
+          password: formData.password,
+        },
+        { withCredentials: true },
+      );
       localStorage.setItem("token", data.token);
       navigate("/dashboard");
     } catch (error: unknown) {

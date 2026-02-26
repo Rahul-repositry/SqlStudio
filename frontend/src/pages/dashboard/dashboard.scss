@@ -106,36 +106,6 @@ $navbar-height: 60px;
   display: flex;
   flex-direction: column;
 
-  .content-header {
-    height: $navbar-height;
-    border-bottom: 1px solid $border-color;
-    display: flex;
-    align-items: center;
-    padding: 0 24px;
-
-    .search-bar {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: $bg-sidebar;
-      padding: 6px 15px;
-      border-radius: 20px;
-      border: 1px solid $border-color;
-      width: 300px;
-      svg {
-        color: $text-muted;
-      }
-      input {
-        background: none;
-        border: none;
-        color: $text-main;
-        outline: none;
-        font-size: 13px;
-        width: 100%;
-      }
-    }
-  }
-
   .page-body {
     padding: 24px;
     flex: 1;

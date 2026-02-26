@@ -4,12 +4,13 @@ import Dashboard from "./pages/dashboard/Dashboard";
 import AssignmentsPage from "./pages/assignmnets/Assignments";
 import SolvedPage from "./pages/solved2/Solved";
 import ProfilePage from "./pages/profile/Profile";
+import axios from "axios";
+axios.defaults.withCredentials = true;
 function App() {
   return (
     <>
       <BrowserRouter>
         <Routes>
-          {/* Protected Dashboard Routes */}
           <Route
             index
             path="/dashboard/*"

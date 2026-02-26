@@ -8,7 +8,7 @@ import {
   FiUser,
   FiLogOut,
   FiSearch,
-} from "react-icons/fi"; 
+} from "react-icons/fi";
 import "./dashboard.scss";
 
 const Dashboard: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -45,7 +45,6 @@ const Dashboard: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             SQL<span className="accent">Studio</span>
           </span>
         </div>
-     
       </nav>
 
       {/* Sidebar  */}
@@ -80,12 +79,6 @@ const Dashboard: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
       {/* Main Content  */}
       <main className="main-content">
-        <header className="content-header">
-          <div className="search-bar">
-            <FiSearch />
-            <input type="text" placeholder="Search tables, queries..." />
-          </div>
-        </header>
         <div className="page-body">{children}</div>
       </main>
 

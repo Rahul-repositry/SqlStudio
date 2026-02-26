@@ -1,46 +1,5 @@
 @use "./variables.scss" as *;
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  background-color: $bg-main;
-  color: $text-main;
-  font-family: $font-sans;
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
-}
-
-@mixin flex-center {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-@mixin glass-panel {
-  background: rgba(30, 41, 59, 0.6);
-  backdrop-filter: blur(12px);
-  border: 1px solid $border-color;
-}
-
-@mixin scrollbar {
-  &::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-  }
-  &::-webkit-scrollbar-thumb {
-    background: $border-color;
-    border-radius: 10px;
-    &:hover {
-      background: lighten($border-color, 10%);
-    }
-  }
-}
-
 .btn {
   display: inline-flex;
   align-items: center;

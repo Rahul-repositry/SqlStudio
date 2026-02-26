@@ -8,7 +8,7 @@ import authRoutes from "./routes/authRoutes.js";
 import assignmentRoutes from "./routes/assignmentRoutes.js";
 import submissionRoutes from "./routes/submissionRoutes.js";
 import globalErrorHandler from "./middleware/error.js";
-dotenv.config({ debug: false });
+dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 5000;

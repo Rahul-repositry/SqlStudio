@@ -1,0 +1,176 @@
+@use "../../variables.scss" as *;
+
+.assignments-view {
+  max-width: 1200px;
+  margin: 0 auto;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 40px;
+    gap: 20px;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    gap: 12px;
+  }
+}
+
+.header-content {
+  &__title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: $text-main;
+  }
+  &__subtitle {
+    color: $text-muted;
+    margin-top: 4px;
+  }
+}
+
+.search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: $bg-sidebar;
+  border: 1px solid $border-color;
+  border-radius: $radius;
+  padding: 0 12px;
+  transition: $transition;
+
+  &:focus-within {
+    border-color: $color-primary;
+    box-shadow: 0 0 0 2px rgba($color-primary, 0.2);
+  }
+
+  &__icon {
+    color: $text-muted;
+  }
+  &__input {
+    background: transparent;
+    border: none;
+    color: $text-main;
+    padding: 10px;
+    outline: none;
+    width: 200px;
+    font-size: 14px;
+  }
+}
+
+
+.assignments-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.task-card {
+  @include glass-panel;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease;
+  position: relative;
+  overflow: hidden;
+
+  &:hover {
+    transform: translateY(-4px);
+    border-color: hsl(from var(--border-color) h s calc(l + 10%));
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+  }
+
+  &--easy::before {
+    background: $color-success;
+  }
+  &--medium::before {
+    background: $color-warning;
+  }
+  &--hard::before {
+    background: $color-error;
+  }
+
+  &__status {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    font-size: 1.2rem;
+    .icon--success {
+      color: $color-success;
+    }
+    .icon--muted {
+      color: $text-muted;
+      opacity: 0.3;
+    }
+  }
+
+  &__meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  &__id {
+    font-family: $font-mono;
+    font-size: 12px;
+    color: $text-muted;
+  }
+
+  &__title {
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+    color: $text-main;
+  }
+
+  &__desc {
+    font-size: 14px;
+    color: $text-muted;
+    line-height: 1.6;
+    margin-bottom: 24px;
+    flex-grow: 1;
+  }
+}
+
+
+.badge {
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+
+  &--easy {
+    background: rgba($color-success, 0.1);
+    color: $color-success;
+  }
+  &--medium {
+    background: rgba($color-warning, 0.1);
+    color: $color-warning;
+  }
+  &--hard {
+    background: rgba($color-error, 0.1);
+    color: $color-error;
+  }
+}
+
+.loading-state {
+  text-align: center;
+  padding: 100px;
+  color: $text-muted;
+  font-family: $font-mono;
+}
