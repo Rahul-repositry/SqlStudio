@@ -6,6 +6,7 @@ import connectMongo from "./config/mongo.js";
 import { connectPostgres } from "./config/postgres.js";
 import authRoutes from "./routes/authRoutes.js";
 import assignmentRoutes from "./routes/assignmentRoutes.js";
+import submissionRoutes from "./routes/submissionRoutes.js";
 
 dotenv.config({ debug: false });
 
@@ -25,6 +26,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", authRoutes);
 app.use("/api/assignments", assignmentRoutes);
+app.use("/api/submissions", submissionRoutes);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

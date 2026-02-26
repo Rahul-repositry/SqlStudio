@@ -18,7 +18,7 @@ const assignmentSchema = new mongoose.Schema({
     },
   ],
 
-  solutionKeyKeyword: { type: String, required: true }, 
+  solutionQuery: { type: String, required: true },
 });
 
 const Assignment = mongoose.model("Assignment", assignmentSchema);
