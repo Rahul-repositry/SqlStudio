@@ -1,26 +1,4 @@
-$bg-main: #0f172a; // Darkest background
-$bg-sidebar: #1e293b; // Sidebar / Navigation
-$bg-surface: #1e293b; // Cards / Modals
-$border-color: #334155; // Subtle separators
-
-$color-primary: #3b82f6; // Action Blue
-$color-primary-hover: #2563eb;
-$color-success: #10b981; // Connection Success / Query OK
-$color-error: #ef4444; // SQL Errors / Delete actions
-$color-warning: #f59e0b; // Slow queries / Warnings
-
-$text-main: #f8fafc; // High contrast text
-$text-muted: #94a3b8; // Secondary info (Table types, sizes)
-$text-code: #e2e8f0; // SQL Editor text
-
-$font-sans:
-  "Inter",
-  system-ui,
-  -apple-system,
-  sans-serif;
-$font-mono: "JetBrains Mono", "Fira Code", monospace;
-$radius: 8px;
-$transition: all 0.2s ease-in-out;
+@use "./variables.scss" as *;
 
 * {
   margin: 0;

@@ -1,12 +1,32 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import AuthPage from "./pages/Auth/AuthPage";
-
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import AuthPage from "./pages/auth/AuthPage";
+import Dashboard from "./pages/dashboard/Dashboard";
+import AssignmentsPage from "./pages/assignmnets/Assignments";
+import SolvedPage from "./pages/solved2/Solved";
+import ProfilePage from "./pages/profile/Profile";
 function App() {
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" index={true} element={<h1>Dashboard</h1>} />
+          {/* Protected Dashboard Routes */}
+          <Route
+            index
+            path="/dashboard/*"
+            element={
+              <Dashboard>
+                <Routes>
+                  <Route
+                    index
+                    element={<Navigate to="assignments" replace />}
+                  />
+                  <Route path="assignments" element={<AssignmentsPage />} />
+                  <Route path="solved" element={<SolvedPage />} />
+                  <Route path="profile" element={<ProfilePage />} />
+                </Routes>
+              </Dashboard>
+            }
+          />
           <Route path="/authpage/login" element={<AuthPage />} />
           <Route path="/authpage/signup" element={<AuthPage />} />
         </Routes>
