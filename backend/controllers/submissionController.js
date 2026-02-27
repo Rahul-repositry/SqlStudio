@@ -19,18 +19,8 @@ function validateSqlQuery(sql) {
     throw new Error("Multiple statements are not allowed.");
   }
 
-  // Allow only SELECT queries
-  if (!cleaned.startsWith("select")) {
-    throw new Error("Only SELECT queries are allowed.");
-  }
-
   // Block dangerous keywords
-  const forbidden = [
-    "drop",
-    "truncate",
-    "alter",
-    "create",
-  ];
+  const forbidden = ["drop", "truncate", "alter", "create"];
 
   for (const word of forbidden) {
     if (cleaned.includes(word)) {
@@ -89,6 +79,7 @@ export const executeAndSubmit = asyncHandler(async (req, res, next) => {
           expectedRows: solutionResult.rowCount,
           isSolved: isCorrect,
           submissionId: submission._id,
+          result: userResult.rows,
         },
         isCorrect
           ? "Correct! Assignment solved."

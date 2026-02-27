@@ -49,16 +49,6 @@ body {
   border: 1px solid $border-color;
 }
 
-@mixin scrollbar {
-  &::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-  }
-  &::-webkit-scrollbar-thumb {
-    background: $border-color;
-    border-radius: 10px;
-    &:hover {
-      background: lighten($border-color, 10%);
-    }
-  }
+#root ::-webkit-scrollbar {
+  display: none;
 }

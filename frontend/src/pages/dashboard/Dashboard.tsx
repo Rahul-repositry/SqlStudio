@@ -3,11 +3,9 @@ import {
   FiMenu,
   FiX,
   FiDatabase,
-  FiCheckCircle,
   FiLayers,
   FiUser,
   FiLogOut,
-  FiSearch,
 } from "react-icons/fi";
 import "./dashboard.scss";
 
@@ -19,7 +17,6 @@ const Dashboard: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       group: "Assignments",
       items: [
         { name: "All", icon: <FiLayers />, link: "/dashboard/assignments" },
-        { name: "Solved", icon: <FiCheckCircle />, link: "/dashboard/solved" },
       ],
     },
     {
@@ -32,6 +29,7 @@ const Dashboard: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   return (
     <div className="app-shell">
+
       {/* Mobile Navbar */}
       <nav className="mobile-navbar">
         <div className="nav-left">

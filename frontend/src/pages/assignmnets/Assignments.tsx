@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { FiCheckCircle, FiCircle, FiFilter } from "react-icons/fi";
+import { FiCheckCircle, FiCircle } from "react-icons/fi";
 import "./assignment.scss";
+import { Link } from "react-router-dom";
 const BACKEND_URI = import.meta.env.VITE_BACKEND_URI;
 
 interface Assignment {
@@ -15,20 +16,26 @@ interface Assignment {
 const AssignmentsPage: React.FC = () => {
   const [assignments, setAssignments] = useState<Assignment[]>([]);
   const [loading, setLoading] = useState(true);
+  const [difficulty, setDifficulty] = useState("");
 
   useEffect(() => {
     const fetchAssignments = async () => {
+      setLoading(true);
       try {
-        const { data } = await axios.get(`${BACKEND_URI}/api/assignments`);
+        const url = difficulty
+          ? `${BACKEND_URI}/api/assignments?difficulty=${difficulty}`
+          : `${BACKEND_URI}/api/assignments`;
+
+        const { data } = await axios.get(url);
         setAssignments(data.data);
       } catch (err) {
-        console.error("Error fetching assignments:", err);
+        console.error("Fetch error:", err);
       } finally {
         setLoading(false);
       }
     };
     fetchAssignments();
-  }, []);
+  }, [difficulty]);
 
   return (
     <div className="assignments-view">
@@ -41,9 +48,22 @@ const AssignmentsPage: React.FC = () => {
         </div>
 
         <div className="assignments-view__actions">
-          <button className="btn btn-outline">
-            <FiFilter /> Filter
-          </button>
+          <div className="filter-group">
+            <label htmlFor="difficulty-select" className="filter-group__label">
+              Difficulty
+            </label>
+            <select
+              id="difficulty-select"
+              className="select-field"
+              value={difficulty}
+              onChange={(e) => setDifficulty(e.target.value)}
+            >
+              <option value="">All Levels</option>
+              <option value="Easy">Easy</option>
+              <option value="Medium">Medium</option>
+              <option value="Hard">Hard</option>
+            </select>
+          </div>
         </div>
       </header>
 
@@ -78,9 +98,11 @@ const AssignmentsPage: React.FC = () => {
               </div>
 
               <div className="task-card__footer">
-                <button className="btn btn-primary btn-sm">
-                  Solve Challenge
-                </button>
+                <Link to={`/dashboard/solve/${task._id}`}>
+                  <button className="btn btn-primary btn-sm">
+                    Solve Challenge
+                  </button>
+                </Link>
               </div>
             </div>
           ))}
