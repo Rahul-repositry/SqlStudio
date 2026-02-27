@@ -9,6 +9,7 @@ import assignmentRoutes from "./routes/assignmentRoutes.js";
 import submissionRoutes from "./routes/submissionRoutes.js";
 import globalErrorHandler from "./middleware/error.js";
 import sandboxRoutes from "./routes/sandboxRoutes.js";
+import aiRoutes from "./routes/aiRoutes.js";
 dotenv.config();
 
 const app = express();
@@ -37,6 +38,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/assignments", assignmentRoutes);
 app.use("/api/submissions", submissionRoutes);
 app.use("/api/sandbox", sandboxRoutes);
+app.use("/api/ai", aiRoutes);
 
 app.use(globalErrorHandler);
 
