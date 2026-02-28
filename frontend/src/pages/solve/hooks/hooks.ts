@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import type { ApiResponse, Assignment, SandboxData } from "../types.ts";
+import type { ApiResponse, Assignment, SandboxData } from "../types";
 
 const BACKEND_URI = import.meta.env.VITE_BACKEND_URI as string;
 

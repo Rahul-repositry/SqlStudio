@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import Editor from "@monaco-editor/react";
-import { useAssignmentData } from "./hooks/hooks.ts";
-import { useQueryExecution } from "./hooks/useQueryExecution.ts";
-import TableRenderer from "./components/TableRenderer.tsx";
-import type { ActiveTab } from "./types.ts";
+import { useAssignmentData } from "./hooks/hooks";
+import { useQueryExecution } from "./hooks/useQueryExecution";
+import TableRenderer from "./components/TableRenderer";
+import type { ActiveTab } from "./types";
 import "./solve.scss";
 import axios from "axios";
 import { FiCpu, FiLoader } from "react-icons/fi";
