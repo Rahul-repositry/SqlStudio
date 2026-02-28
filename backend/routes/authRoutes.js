@@ -30,6 +30,6 @@ router.post("/get-otp", getOTP);
 router.post("/login", login);
 router.post("/signup", verifyAndSignup);
 router.get("/getme", protect, getMe);
-router.post("/logout", logout);
+router.post("/logout", protect, logout);
 
 export default router;

@@ -8,10 +8,14 @@ import {
   FiLogOut,
 } from "react-icons/fi";
 import "./dashboard.scss";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
+const BACKEND_URI = import.meta.env.VITE_BACKEND_URI;
 
 const Dashboard: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
+  const navigate = useNavigate();
   const menuItems = [
     {
       group: "Assignments",
@@ -27,9 +31,20 @@ const Dashboard: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     },
   ];
 
+  const handleLogout = async () => {
+    try {
+      await axios.post(`${BACKEND_URI}/api/auth/logout`, {
+        withCredentials: true,
+      });
+      localStorage.removeItem("user");
+      navigate("/authpage/login");
+    } catch (err) {
+      console.error("Logout failed:", err);
+    }
+  };
+
   return (
     <div className="app-shell">
-
       {/* Mobile Navbar */}
       <nav className="mobile-navbar">
         <div className="nav-left">
@@ -69,7 +84,7 @@ const Dashboard: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         </div>
 
         <div className="sidebar-footer">
-          <button className="btn-logout">
+          <button className="btn-logout" onClick={handleLogout}>
             <FiLogOut /> <span>Logout</span>
           </button>
         </div>
