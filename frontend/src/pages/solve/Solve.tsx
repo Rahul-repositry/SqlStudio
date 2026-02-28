@@ -6,6 +6,9 @@ import { useQueryExecution } from "./hooks/useQueryExecution";
 import TableRenderer from "./components/TableRenderer";
 import type { ActiveTab } from "./types";
 import "./solve.scss";
+import axios from "axios";
+import { FiCpu, FiLoader } from "react-icons/fi";
+const BACKEND_URI = import.meta.env.VITE_BACKEND_URI as string;
 
 const Solve: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -26,7 +29,25 @@ const Solve: React.FC = () => {
     "-- Write your SQL query here\n",
   );
   const [activeTab, setActiveTab] = useState<ActiveTab>("results");
+  const [hint, setHint] = useState<string | null>(null);
+  const [isHintLoading, setIsHintLoading] = useState(false);
 
+  const handleGetHint = async () => {
+    if (isHintLoading) return;
+    setIsHintLoading(true);
+
+    try {
+      const { data } = await axios.post(`${BACKEND_URI}/api/ai/hint`, {
+        assignmentId: id,
+        currentQuery: sqlQuery,
+      });
+      setHint(data.data.hint);
+    } catch (err) {
+      console.error("AI Hint Error:", err);
+    } finally {
+      setIsHintLoading(false);
+    }
+  };
   const handleExecute = async (): Promise<void> => {
     await executeQuery(id, sqlQuery);
     setActiveTab("results");
@@ -65,6 +86,26 @@ const Solve: React.FC = () => {
           <div className="solver-page__task-box">{assignment.question}</div>
         </div>
       </section>
+
+      <div className="solver-page__ai-section">
+        <div className="solver-page__ai-controls">
+          <button
+            className={`btn-ai ${isHintLoading ? "btn-ai--loading" : ""}`}
+            onClick={handleGetHint}
+            disabled={isHintLoading}
+          >
+            {isHintLoading ? <FiLoader className="spin" /> : <FiCpu />}
+            {hint ? "Refresh Hint" : "Get AI Hint"}
+          </button>
+        </div>
+
+        {hint && (
+          <div className="solver-page__hint-bubble">
+            <div className="hint-header">AI Assistant</div>
+            <p className="hint-text">{hint}</p>
+          </div>
+        )}
+      </div>
 
       {/* Editor Section - Middle */}
       <section className="solver-page__editor-section">
@@ -107,6 +148,12 @@ const Solve: React.FC = () => {
             Results
           </button>
           <button
+            className={`solver-page__tab-btn ${activeTab === "expected" ? "solver-page__tab-btn--active" : ""}`}
+            onClick={() => setActiveTab("expected")}
+          >
+            Expected Output :
+          </button>
+          <button
             className={`solver-page__tab-btn ${activeTab === "schema" ? "solver-page__tab-btn--active" : ""}`}
             onClick={() => setActiveTab("schema")}
           >
@@ -125,6 +172,13 @@ const Solve: React.FC = () => {
             <TableRenderer
               data={queryResult?.result || []}
               emptyMessage="→ Run a query to see results"
+            />
+          )}
+
+          {activeTab === "expected" && (
+            <TableRenderer
+              data={assignment?.sampleDataViewer[0]?.sampleRows || []}
+              emptyMessage="→ Loading sampleData..."
             />
           )}
 

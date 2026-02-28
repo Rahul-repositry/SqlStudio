@@ -14,9 +14,6 @@ $error-text: #cf222e;
 $breakpoint-tablet: 1024px;
 $breakpoint-mobile: 768px;
 
-.main-content .page-body {
-  padding: 0;
-}
 .solver-page {
   display: flex;
   flex-direction: column;
@@ -25,6 +22,41 @@ $breakpoint-mobile: 768px;
   color: $text-main;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   overflow: hidden;
+  &__ai-section {
+    padding: 16px 24px;
+    background: rgba($bg-sidebar, 0.4);
+    border-top: 1px solid $border-color;
+    border-bottom: 1px solid $border-color;
+  }
+
+  &__ai-controls {
+    display: flex;
+    align-items: center;
+  }
+
+  &__hint-bubble {
+    margin-top: 12px;
+    padding: 16px;
+    background: rgba($color-primary, 0.05);
+    border-left: 3px solid $color-primary;
+    border-radius: $radius;
+    animation: slideDown 0.3s ease-out;
+
+    .hint-header {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: $color-primary;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .hint-text {
+      font-size: 14px;
+      line-height: 1.5;
+      color: $text-main;
+    }
+  }
 
   &__question-section {
     height: 25%;
@@ -306,6 +338,73 @@ $breakpoint-mobile: 768px;
   border-radius: 12px;
   font-size: 0.7rem;
   font-weight: 500;
+}
+
+.main-content .page-body:has(.solver-page) {
+  padding: 0;
+}
+
+// AI Button - Custom Styling
+.btn-ai {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: linear-gradient(
+    135deg,
+    #6366f1 0%,
+    #a855f7 100%
+  ); // Purple/Blue AI vibe
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(99, 102, 241, 0.4);
+    filter: brightness(1.1);
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: wait;
+  }
+
+  .spin {
+    animation: rotate 1s linear infinite;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .solver-page__ai-section {
+    padding: 12px;
+  }
 }
 
 @keyframes spin {

@@ -37,6 +37,9 @@ export const useQueryExecution = (): UseQueryExecutionReturn => {
         },
       );
       console.log("Received query result:", res.data);
+      if (res?.data?.data?.isSolved) {
+        alert("Congratulations! You've solved the assignment!");
+      }
       setQueryResult(res.data.data);
     } catch (err: any) {
       setError(

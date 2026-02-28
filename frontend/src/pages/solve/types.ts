@@ -1,3 +1,18 @@
+interface SampleRow {
+  id: number;
+  name: string;
+  salary: number | null;
+  // If rows can have any dynamic fields, use: [key: string]: any;
+}
+
+// 2. Define the viewer object that contains table metadata
+interface SampleDataViewer {
+  _id: string;
+  tableName: string;
+  columns: string[];
+  sampleRows: SampleRow[];
+}
+
 export interface Assignment {
   id: string;
   title: string;
@@ -5,6 +20,7 @@ export interface Assignment {
   question: string;
   difficulty: "Easy" | "Medium" | "Hard";
   targetTable: string;
+  sampleDataViewer?: SampleDataViewer[];
   createdAt?: string;
   updatedAt?: string;
 }
@@ -28,4 +44,4 @@ export interface ApiResponse<T> {
   success: boolean;
 }
 
-export type ActiveTab = "results" | "schema";
+export type ActiveTab = "results" | "schema" | "expected";
