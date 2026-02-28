@@ -2,7 +2,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import AuthPage from "./pages/auth/AuthPage";
 import Dashboard from "./pages/dashboard/Dashboard";
 import AssignmentsPage from "./pages/assignmnets/Assignments";
-import SolvePage from "./pages/solve/Solve.tsx";
+import SolvePage from "./pages/solve/Solve";
 import ProfilePage from "./pages/profile/Profile";
 import axios from "axios";
 

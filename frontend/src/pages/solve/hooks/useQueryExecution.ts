@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import type { QueryResult, ApiResponse } from "../types.ts";
+import type { QueryResult, ApiResponse } from "../types";
 
 const BACKEND_URI = import.meta.env.VITE_BACKEND_URI as string;
 

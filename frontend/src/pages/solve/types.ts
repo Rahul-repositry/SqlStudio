@@ -20,7 +20,7 @@ export interface Assignment {
   question: string;
   difficulty: "Easy" | "Medium" | "Hard";
   targetTable: string;
-  sampleDataViewer?: SampleDataViewer[];
+  sampleDataViewer: SampleDataViewer[];
   createdAt?: string;
   updatedAt?: string;
 }
