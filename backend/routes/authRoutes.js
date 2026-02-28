@@ -6,6 +6,8 @@ import {
 } from "../controllers/authController.js";
 import ApiResponse from "../utils/apiResponse.js";
 import asyncHandler from "../utils/asyncHandler.js";
+import AppError from "../error/AppError.js";
+import { protect } from "../middleware/authMiddleware.js";
 const router = express.Router();
 
 const logout = asyncHandler(async (req, res, next) => {
@@ -15,9 +17,19 @@ const logout = asyncHandler(async (req, res, next) => {
     .json(new ApiResponse(200, null, "Logged out successfully!"));
 });
 
+const getMe = asyncHandler(async (req, res, next) => {
+  if (!req.user) {
+    return next(new AppError("Log In", 401));
+  }
+  return res
+    .status(200)
+    .json(new ApiResponse(200, req.user, "User data fetched successfully!"));
+});
+
 router.post("/get-otp", getOTP);
 router.post("/login", login);
 router.post("/signup", verifyAndSignup);
+router.get("/getme", protect, getMe);
 router.post("/logout", logout);
 
 export default router;
