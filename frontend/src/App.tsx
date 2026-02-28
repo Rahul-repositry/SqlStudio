@@ -1,9 +1,9 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import AuthPage from "./pages/auth/AuthPage";
-import Dashboard from "./pages/dashboard/Dashboard";
-import AssignmentsPage from "./pages/assignmnets/Assignments";
+import AuthPage from "./pages/auth/AuthPage.tsx";
+import Dashboard from "./pages/dashboard/Dashboard.tsx";
+import AssignmentsPage from "./pages/assignmnets/Assignments.tsx";
 import SolvePage from "./pages/solve/Solve.tsx";
-import ProfilePage from "./pages/profile/Profile";
+import ProfilePage from "./pages/profile/Profile.tsx";
 import axios from "axios";
 
 axios.defaults.withCredentials = true;
