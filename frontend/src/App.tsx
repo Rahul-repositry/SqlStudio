@@ -1,5 +1,5 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import AuthPage from "./pages/Auth_232/AuthPage";
+import AuthPage from "./pages/auth/AuthPage";
 import Dashboard from "./pages/dashboard/Dashboard";
 import AssignmentsPage from "./pages/assignmnets/Assignments";
 import SolvePage from "./pages/solve/Solve";
